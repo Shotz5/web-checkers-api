@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Piece;
 use App\Models\Board;
 use App\Http\Requests\StoreBoardRequest;
 use App\Http\Requests\UpdateBoardRequest;
@@ -14,7 +15,7 @@ class BoardController extends Controller
      */
     public function index()
     {
-        return view('board');
+        // Needs to be create board stuff
     }
 
     /**
@@ -23,24 +24,23 @@ class BoardController extends Controller
     public function create()
     {
         $pieces = new Collection();
-        $counter = 0;
         $colour = 'black';
-        for ($y = 1; $y <= Board::$BOARD_HEIGHT; $y++) {
-            for ($x = 1; $x <= Board::$BOARD_WIDTH; $x++) {
+        for ($y = 1; $y <= Piece::$BOARD_HEIGHT; $y++) {
+            for ($x = 1; $x <= Piece::$BOARD_WIDTH; $x++) {
 
-                if ($y > Board::$PLAYER_HEIGHT && $y <= (Board::$BOARD_HEIGHT - Board::$PLAYER_HEIGHT)) {
+                if ($y > Piece::$PLAYER_HEIGHT && $y <= (Piece::$BOARD_HEIGHT - Piece::$PLAYER_HEIGHT)) {
                     $colour = 'white';
                     continue;
                 }
 
                 if (($x + $y) % 2 == 0) {
-                    $pieces[] = new Board([
-                        'id' => $counter,
+                    $piece = new Piece([
                         'colour' => $colour,
                         'x' => $x,
                         'y' => $y,
                     ]);
-                    $counter += 1;
+                    $piece->save();
+                    $pieces[] = $piece;
                 }
             }
         }
@@ -58,33 +58,17 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Board $board)
+    public function show(int $board)
     {
-        //
+        return view('board', ['pieces' => Piece::where('board_id', $board)]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Board $board)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBoardRequest $request/*, Board $board*/)
-    {
-        return response()->json($request->toArray());
-        // $board->fill($request->toArray());
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Board $board)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  */
+    // public function update(UpdateBoardRequest $request/*, Board $board*/)
+    // {
+    //     return response()->json($request->toArray());
+    //     // $board->fill($request->toArray());
+    // }
 }

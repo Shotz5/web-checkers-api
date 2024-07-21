@@ -13,7 +13,17 @@
             @for ($y = 1; $y <= 8; $y++)
                 <tr>
                     @for ($x = 1; $x <= 8; $x++)
-                        <td id="{{ $x . $y }}" class="square {{ (($x + $y) % 2 == 0) ? 'white' : 'black' }}"></td>
+                        <td id="board-{{ $x . $y }}"
+                            class="square {{ (($x + $y) % 2 == 0) ? 'white' : 'black' }}"
+                            data-x="{{ $x }}"
+                            data-y="{{ $y }}"
+                        >
+                        {{-- @foreach ($pieces as $piece)
+                            @if ($piece->x == $x && $piece->y == $y)
+                                <p id="{{ $piece->id }}" class="piece {{ $piece->colour }}"></p>
+                            @endif
+                        @endforeach --}}
+                        </td>
                     @endfor
                 </tr>
             @endfor

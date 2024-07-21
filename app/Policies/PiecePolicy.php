@@ -6,7 +6,7 @@ use App\Models\Board;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class BoardPolicy
+class PiecePolicy
 {
     /**
      * Determine whether the user can view any models.
