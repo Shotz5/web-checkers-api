@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    @vite('resources/js/app.js');
+    @vite('resources/js/app.js')
 </head>
 <body>
     <table>
@@ -13,13 +13,7 @@
             @for ($y = 1; $y <= 8; $y++)
                 <tr>
                     @for ($x = 1; $x <= 8; $x++)
-                        <td id="{{ $x . $y }}" class="{{ (($x + $y) % 2 == 0) ? 'white' : 'black' }}">
-                            {{-- @foreach ($pieces as $piece)
-                                @if ($piece->x == $x && $piece->y == $y)
-                                    <p id="{{ $piece->id }}" class="piece {{ $piece->colour }}"></p>
-                                @endif
-                            @endforeach --}}
-                        </td>
+                        <td id="{{ $x . $y }}" class="square {{ (($x + $y) % 2 == 0) ? 'white' : 'black' }}"></td>
                     @endfor
                 </tr>
             @endfor

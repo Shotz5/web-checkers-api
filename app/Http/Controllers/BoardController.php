@@ -74,10 +74,10 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBoardRequest $request, Board $board)
+    public function update(UpdateBoardRequest $request/*, Board $board*/)
     {
         return response()->json($request->toArray());
-        $board->fill($request->toArray());
+        // $board->fill($request->toArray());
     }
 
     /**

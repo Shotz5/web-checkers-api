@@ -1,8 +1,22 @@
 import './bootstrap';
 import 'axios';
 
-function movePiece(piece, x, y) {
-    axios.patch('/api/board/' + piece)
+function movePiece(piece, destination) {
+    let target = destination.id.split('');
+    destination.appendChild(piece);
+    piece.style.position = null;
+    piece.style.left = null;
+    piece.style.top = null;
+    console.log(target);
+    piece.x = target[0];
+    piece.y = target[1];
+    axios.patch('/api/board/' + piece.id, piece)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
 }
 
 function setPieceLocation(piece, x, y) {
@@ -26,13 +40,16 @@ axios.get('/api/board/create')
             newEle.addEventListener("mousedown", function (e) {
                 let piece = this;
                 piece.style.position = "absolute";
-                piece.style.zIndex = 1000;
                 document.body.append(piece);
 
                 setPieceLocation(piece, e.pageX, e.pageY);
 
                 piece.addEventListener('mousemove', convertEventToLocation);
                 piece.addEventListener('mouseup', function (f) {
+                    let destination = document.elementsFromPoint(f.pageX, f.pageY).find((ele, i) => {
+                        return ele.classList.contains("square");
+                    });
+                    movePiece(piece, destination);
                     piece.removeEventListener('mousemove', convertEventToLocation);
                 });
             });
