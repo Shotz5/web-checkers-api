@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Checkers</title>
     @vite('resources/js/app.js')
 </head>
 <body>
@@ -18,11 +18,11 @@
                             data-x="{{ $x }}"
                             data-y="{{ $y }}"
                         >
-                        {{-- @foreach ($pieces as $piece)
-                            @if ($piece->x == $x && $piece->y == $y)
-                                <p id="{{ $piece->id }}" class="piece {{ $piece->colour }}"></p>
-                            @endif
-                        @endforeach --}}
+                            @foreach ($pieces as $piece)
+                                @if ($piece->x == $x && $piece->y == $y)
+                                    <p id="{{ $piece->id }}" class="piece {{ $piece->colour }}"></p>
+                                @endif
+                            @endforeach
                         </td>
                     @endfor
                 </tr>

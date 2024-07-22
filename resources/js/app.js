@@ -13,9 +13,11 @@ function movePiece(e) {
     this.y = destination.dataset.y;
     axios.patch('/api/piece/' + this.id, this)
         .then(response => {
+            // Preserve move
             console.log(response.data);
         })
         .catch(error => {
+            // Reset piece back to original spot
             console.log(error);
         });
 }
@@ -29,30 +31,16 @@ function convertEventToLocation(event) {
     setPieceLocation(this, event.pageX, event.pageY);
 }
 
-// axios.get('/api/board/create')
-//     .then(response => {
-//         response.data.forEach((ele, i) => {
-//             let domEle = document.getElementById("board-" + ele.x + ele.y);
-//             let newEle = document.createElement("p");
+let pieces = document.getElementsByClassName('piece');
 
-//             newEle.id = ele.id;
-//             newEle.classList.add("piece");
-//             newEle.classList.add(ele.colour);
+for (let piece of pieces) {
+    piece.addEventListener("mousedown", function (e) {
+        this.style.position = "absolute";
+        document.body.append(this);
 
-//             domEle.append(newEle);
+        setPieceLocation(piece, e.pageX, e.pageY);
 
-//             newEle.addEventListener("mousedown", function (e) {
-//                 let piece = this;
-//                 piece.style.position = "absolute";
-//                 document.body.append(piece);
-
-//                 setPieceLocation(piece, e.pageX, e.pageY);
-
-//                 piece.addEventListener('mousemove', convertEventToLocation);
-//             });
-//             newEle.addEventListener('mouseup', movePiece);
-//         });
-//     })
-//     .catch(error => {
-//         console.log(error);
-//     });
+        piece.addEventListener('mousemove', convertEventToLocation);
+    });
+    piece.addEventListener('mouseup', movePiece);
+}

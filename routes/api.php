@@ -5,8 +5,8 @@ use App\Http\Controllers\PieceController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(BoardController::class)->prefix('/board')->group(function () {
-    Route::get('/{board}', 'index');
     Route::get('/create', 'create');
+    Route::get('/{board}', 'show');
 });
 
 Route::controller(PieceController::class)->prefix('/piece')->group(function () {

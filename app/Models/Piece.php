@@ -10,7 +10,7 @@ class Piece extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'board_id',
         'colour',
         'x',
         'y'
@@ -21,4 +21,9 @@ class Piece extends Model
     public static $PLAYER_HEIGHT = 3;
     public static $MIDDLE_SKIP = 2;
     public static $COLOURS = ['black', 'white'];
+
+    public function board()
+    {
+        return $this->hasOne(Board::class);
+    }
 }

@@ -23,6 +23,9 @@ class BoardController extends Controller
      */
     public function create()
     {
+        $board = new Board();
+        $board->save();
+
         $pieces = new Collection();
         $colour = 'black';
         for ($y = 1; $y <= Piece::$BOARD_HEIGHT; $y++) {
@@ -35,6 +38,7 @@ class BoardController extends Controller
 
                 if (($x + $y) % 2 == 0) {
                     $piece = new Piece([
+                        'board_id' => $board->id,
                         'colour' => $colour,
                         'x' => $x,
                         'y' => $y,
@@ -47,20 +51,20 @@ class BoardController extends Controller
         return response()->json($pieces);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreBoardRequest $request)
-    {
-        //
-    }
+    // /**
+    //  * Store a newly created resource in storage.
+    //  */
+    // public function store(StoreBoardRequest $request)
+    // {
+    //     //
+    // }
 
     /**
      * Display the specified resource.
      */
     public function show(int $board)
     {
-        return view('board', ['pieces' => Piece::where('board_id', $board)]);
+        return view('board', ['pieces' => Piece::where('board_id', $board)->get()]);
     }
 
     // /**
