@@ -2,7 +2,6 @@
 
 namespace App\Support\Referee;
 
-use App\Models\Piece;
 use App\Support\Referee\Enums\RefereeEnums;
 
 trait Rules
@@ -14,14 +13,8 @@ trait Rules
      */
     private function friendlyPiecesOnSpace(): ?RefereeEnums
     {
-        $friendlyPieces = Piece::where('board_id', $this->piece->board_id)
-            ->where('colour', $this->piece->colour)
-            ->where('x', $this->newX)
-            ->where('y', $this->newY)
-            ->count();
-
         // If there's a friendly piece on this spot
-        if ($friendlyPieces !== 0)
+        if ($this->pieceOnSpace !== null && $this->pieceOnSpace->colour == $this->piece->colour)
         {
             return RefereeEnums::FRIENDLY_PIECE_ON_SPACE;
         }

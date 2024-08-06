@@ -10,6 +10,7 @@ class Referee
     use Rules;
 
     private Piece $piece;
+    private ?Piece $pieceOnSpace;
     private int $newX;
     private int $newY;
 
@@ -26,6 +27,11 @@ class Referee
         $this->piece = $piece;
         $this->newX = $newX;
         $this->newY = $newY;
+
+        $this->pieceOnSpace = Piece::where('board_id', $this->piece->board_id)
+            ->where('x', $this->newX)
+            ->where('y', $this->newY)
+            ->first();
     }
 
     public function getViolations(): array
@@ -36,6 +42,11 @@ class Referee
     public function getPiece(): Piece
     {
         return $this->piece;
+    }
+
+    public function getPieceOnSpace(): ?Piece
+    {
+        return $this->pieceOnSpace;
     }
 
     /**
@@ -69,5 +80,16 @@ class Referee
         $this->piece->y = $this->newY;
 
         return $this->piece->save();
+    }
+
+    /**
+     * Take piece on the space
+     *
+     * @return bool
+     */
+    public function takePieceOnSpace(): bool
+    {
+        $this->pieceOnSpace->taken = true;
+        return $this->pieceOnSpace->save();
     }
 }
