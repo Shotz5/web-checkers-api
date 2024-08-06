@@ -33,6 +33,7 @@ function movePiece(e) {
         .then(response => {
             // Preserve move
             console.log(response.data);
+            destination.innerHTML = '';
             destination.appendChild(this);
             this.style.position = null;
             this.style.left = null;

@@ -19,7 +19,7 @@
                             data-y="{{ $y }}"
                         >
                             @foreach ($pieces as $piece)
-                                @if ($piece->x == $x && $piece->y == $y)
+                                @if ($piece->x == $x && $piece->y == $y && !$piece->taken)
                                     <p id="{{ $piece->id }}" class="piece {{ $piece->colour }}"></p>
                                 @endif
                             @endforeach
