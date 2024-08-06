@@ -1,24 +1,52 @@
 import './bootstrap';
 import 'axios';
 
+let pieces = document.getElementsByClassName('piece');
+let original = null;
+
+for (let piece of pieces) {
+    piece.addEventListener("mousedown", function (e) {
+        original = document.elementsFromPoint(e.pageX, e.pageY).find((ele, i) => {
+            return ele.classList.contains("square");
+        });
+
+        this.style.position = "absolute";
+        document.body.append(this);
+
+        setPieceLocation(piece, e.pageX, e.pageY);
+
+        piece.addEventListener('mousemove', convertEventToLocation);
+    });
+    piece.addEventListener('mouseup', movePiece);
+}
+
+/**
+ * Functions
+ */
+
 function movePiece(e) {
     let destination = document.elementsFromPoint(e.pageX, e.pageY).find((ele, i) => {
         return ele.classList.contains("square");
     });
-    destination.appendChild(this);
-    this.style.position = null;
-    this.style.left = null;
-    this.style.top = null;
-    this.x = destination.dataset.x;
-    this.y = destination.dataset.y;
-    axios.patch('/api/piece/' + this.id, { x: this.x, y: this.y })
+
+    axios.patch('/api/piece/' + this.id, { x: destination.dataset.x, y: destination.dataset.y })
         .then(response => {
             // Preserve move
             console.log(response.data);
+            destination.appendChild(this);
+            this.style.position = null;
+            this.style.left = null;
+            this.style.top = null;
+            this.x = destination.dataset.x;
+            this.y = destination.dataset.y;
         })
         .catch(error => {
             // Reset piece back to original spot
             console.log(error);
+            original.appendChild(this);
+            this.style.position = null;
+            this.style.left = null;
+            this.style.top = null;
         });
 }
 
@@ -29,18 +57,4 @@ function setPieceLocation(piece, x, y) {
 
 function convertEventToLocation(event) {
     setPieceLocation(this, event.pageX, event.pageY);
-}
-
-let pieces = document.getElementsByClassName('piece');
-
-for (let piece of pieces) {
-    piece.addEventListener("mousedown", function (e) {
-        this.style.position = "absolute";
-        document.body.append(this);
-
-        setPieceLocation(piece, e.pageX, e.pageY);
-
-        piece.addEventListener('mousemove', convertEventToLocation);
-    });
-    piece.addEventListener('mouseup', movePiece);
 }
