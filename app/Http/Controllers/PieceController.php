@@ -11,21 +11,18 @@ class PieceController extends Controller
      */
     public function update(Referee $referee)
     {
-        if (!$referee->isValidMove())
-        {
+        if (!$referee->isValidMove()) {
             return response()->json(array_map(function ($violation) {
                 return $violation->value;
             }, $referee->getViolations()), 400);
         }
 
-        if (!$referee->savePieceCordinates())
-        {
+        if (!$referee->savePieceCordinates()) {
             return response('Error saving piece to database', 500);
         }
 
         // Can safely assume piece is of other colour if it exists at this point
-        if ($referee->getPieceOnSpace() !== null && !$referee->takePieceOnSpace())
-        {
+        if ($referee->getPieceOnSpace() !== null && !$referee->takePieceOnSpace()) {
             return response('Error updated taken piece', 500);
         }
 
