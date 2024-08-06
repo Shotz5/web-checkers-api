@@ -11,7 +11,7 @@ function movePiece(e) {
     this.style.top = null;
     this.x = destination.dataset.x;
     this.y = destination.dataset.y;
-    axios.patch('/api/piece/' + this.id, this)
+    axios.patch('/api/piece/' + this.id, { x: this.x, y: this.y })
         .then(response => {
             // Preserve move
             console.log(response.data);

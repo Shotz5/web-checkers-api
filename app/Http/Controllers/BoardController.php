@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Piece;
 use App\Models\Board;
-use App\Http\Requests\StoreBoardRequest;
-use App\Http\Requests\UpdateBoardRequest;
 use Illuminate\Database\Eloquent\Collection;
 
 class BoardController extends Controller
@@ -15,7 +13,7 @@ class BoardController extends Controller
      */
     public function index()
     {
-        // Needs to be create board stuff
+        // View to create a new game
     }
 
     /**
@@ -51,14 +49,6 @@ class BoardController extends Controller
         return response()->json($pieces);
     }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(StoreBoardRequest $request)
-    // {
-    //     //
-    // }
-
     /**
      * Display the specified resource.
      */
@@ -66,13 +56,4 @@ class BoardController extends Controller
     {
         return view('board', ['pieces' => Piece::where('board_id', $board)->get()]);
     }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(UpdateBoardRequest $request/*, Board $board*/)
-    // {
-    //     return response()->json($request->toArray());
-    //     // $board->fill($request->toArray());
-    // }
 }

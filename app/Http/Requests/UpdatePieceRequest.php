@@ -22,7 +22,8 @@ class UpdatePieceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'x' => 'required|integer',
+            'y' => 'required|integer',
         ];
     }
 }
