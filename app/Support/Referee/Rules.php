@@ -14,7 +14,7 @@ trait Rules
      */
     private function friendlyPiecesOnSpace(): ?RefereeEnums
     {
-        $friendlyPieces = Piece::where('board_id', $this->piece->boardId)
+        $friendlyPieces = Piece::where('board_id', $this->piece->board_id)
             ->where('colour', $this->piece->colour)
             ->where('x', $this->newX)
             ->where('y', $this->newY)

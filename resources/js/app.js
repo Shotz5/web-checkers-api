@@ -42,7 +42,7 @@ function movePiece(e) {
         })
         .catch(error => {
             // Reset piece back to original spot
-            console.log(error);
+            console.log(error.response.data);
             original.appendChild(this);
             this.style.position = null;
             this.style.left = null;
