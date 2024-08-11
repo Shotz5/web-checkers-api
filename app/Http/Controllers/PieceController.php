@@ -17,8 +17,11 @@ class PieceController extends Controller
             }, $referee->getViolations()), 400);
         }
 
-        if (!$referee->savePieceCordinates()) {
-            return response('Error saving piece to database', 500);
+        $referee->updatePieceCordinates();
+        $referee->kingPiece();
+
+        if (!$referee->savePiece()) {
+            return response('Error occurred while updating piece', 500);
         }
 
         return response()->json($referee->getPiece()->toArray());

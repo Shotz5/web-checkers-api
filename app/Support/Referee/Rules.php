@@ -12,11 +12,11 @@ trait Rules
      *
      * @return ?RefereeEnums
      */
-    private function friendlyPiecesOnSpace(): ?RefereeEnums
+    private function pieceOnSpace(): ?RefereeEnums
     {
         // If there's a friendly piece on this spot
-        if ($this->pieceOnSpace !== null && $this->pieceOnSpace->colour == $this->piece->colour) {
-            return RefereeEnums::FRIENDLY_PIECE_ON_SPACE;
+        if ($this->pieceOnSpace !== null) {
+            return RefereeEnums::PIECE_ON_SPACE;
         }
 
         return null;
@@ -47,7 +47,7 @@ trait Rules
     {
         $num_jumped = $this->piece->y - $this->newY;
 
-        if ($num_jumped > 2 || $num_jumped == 0 || $num_jumped < -2) {
+        if (abs($num_jumped) > 2 || $num_jumped == 0) {
             return RefereeEnums::INVALID_VERTICAL_MOVE;
         }
 
@@ -62,7 +62,7 @@ trait Rules
         }
 
         // King can move any direction
-        if ($this->piece->king && abs($num_jumped) <= 2) {
+        if ($this->piece->king && abs($num_jumped) > 2) {
             return RefereeEnums::INVALID_VERTICAL_MOVE;
         }
 
@@ -74,7 +74,7 @@ trait Rules
      *
      * @return ?RefereeEnums
      */
-    private function verticalCountEqualsHorizontalCount()
+    private function verticalCountEqualsHorizontalCount(): ?RefereeEnums
     {
         $x_num_jumped = abs($this->piece->x - $this->newX);
         $y_num_jumped = abs($this->piece->y - $this->newY);
@@ -91,7 +91,7 @@ trait Rules
      *
      * @return ?RefereeEnums
      */
-    private function isValidJump()
+    private function isValidJump(): ?RefereeEnums
     {
         $x_num_jumped = $this->piece->x - $this->newX;
         $y_num_jumped = $this->piece->y - $this->newY;

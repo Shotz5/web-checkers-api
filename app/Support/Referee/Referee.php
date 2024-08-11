@@ -15,7 +15,7 @@ class Referee
     private int $newY;
 
     private array $rules = [
-        'friendlyPiecesOnSpace',
+        'pieceOnSpace',
         'isValidHorizontalMove',
         'isValidVerticalMove',
         'verticalCountEqualsHorizontalCount',
@@ -73,15 +73,37 @@ class Referee
     }
 
     /**
-     * Update the pieces coordinates to the new coords in the database
+     * Update the pieces coordinates to the new coords
      *
-     * @return bool
+     * @return void
      */
-    public function savePieceCordinates(): bool
+    public function updatePieceCordinates(): void
     {
         $this->piece->x = $this->newX;
         $this->piece->y = $this->newY;
+    }
 
+    /**
+     * King the piece if they're eligible
+     *
+     * @return void
+     */
+    public function kingPiece(): void
+    {
+        if ($this->piece->colour === "white" && $this->newY === 1 ||
+            $this->piece->colour === "black" && $this->newY === 8
+        ) {
+            $this->piece->king = true;
+        }
+    }
+
+    /**
+     * Save all updates to the piece
+     *
+     * @return bool
+     */
+    public function savePiece(): bool
+    {
         return $this->piece->save();
     }
 }
