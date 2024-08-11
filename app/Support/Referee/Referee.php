@@ -18,6 +18,8 @@ class Referee
         'friendlyPiecesOnSpace',
         'isValidHorizontalMove',
         'isValidVerticalMove',
+        'verticalCountEqualsHorizontalCount',
+        'isValidJump',
     ];
 
     private array $violations = [];
@@ -31,6 +33,7 @@ class Referee
         $this->pieceOnSpace = Piece::where('board_id', $this->piece->board_id)
             ->where('x', $this->newX)
             ->where('y', $this->newY)
+            ->where('taken', false)
             ->first();
     }
 
@@ -80,16 +83,5 @@ class Referee
         $this->piece->y = $this->newY;
 
         return $this->piece->save();
-    }
-
-    /**
-     * Take piece on the space
-     *
-     * @return bool
-     */
-    public function takePieceOnSpace(): bool
-    {
-        $this->pieceOnSpace->taken = true;
-        return $this->pieceOnSpace->save();
     }
 }

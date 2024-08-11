@@ -21,11 +21,6 @@ class PieceController extends Controller
             return response('Error saving piece to database', 500);
         }
 
-        // Can safely assume piece is of other colour if it exists at this point
-        if ($referee->getPieceOnSpace() !== null && !$referee->takePieceOnSpace()) {
-            return response('Error updated taken piece', 500);
-        }
-
         return response()->json($referee->getPiece()->toArray());
     }
 }
