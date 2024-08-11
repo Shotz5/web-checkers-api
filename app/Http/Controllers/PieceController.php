@@ -24,6 +24,10 @@ class PieceController extends Controller
             return response('Error occurred while updating piece', 500);
         }
 
+        if (!$referee->updateTurn()) {
+            return response('Error occurred while changing board turn', 500);
+        }
+
         return response()->json($referee->getPiece()->toArray());
     }
 }

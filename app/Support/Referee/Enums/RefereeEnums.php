@@ -12,4 +12,5 @@ enum RefereeEnums: string
     case INVALID_JUMP_DIRECTION = 'Invalid jump, did not move two in both directions';
     case INVALID_JUMP = 'Invalid jump, there is no piece to jump';
     case INVALID_JUMP_OWN_PIECE = 'Invalid jump, cannot jump your own piece';
+    case NOT_YOUR_TURN = 'Not your turn';
 }

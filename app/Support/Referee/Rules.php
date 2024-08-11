@@ -8,6 +8,20 @@ use App\Support\Referee\Enums\RefereeEnums;
 trait Rules
 {
     /**
+     * Check if it's this pieces turn
+     *
+     * @return ?RefereeEnums
+     */
+    private function isTurn(): ?RefereeEnums
+    {
+        if ($this->board->turn !== $this->piece->colour) {
+            return RefereeEnums::NOT_YOUR_TURN;
+        }
+
+        return null;
+    }
+
+    /**
      * Can't move onto a space already occupied by yourself
      *
      * @return ?RefereeEnums

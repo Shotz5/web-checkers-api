@@ -2,6 +2,7 @@
 
 namespace App\Support\Referee;
 
+use App\Models\Board;
 use App\Models\Piece;
 use App\Support\Referee\Rules;
 
@@ -9,12 +10,14 @@ class Referee
 {
     use Rules;
 
+    private Board $board;
     private Piece $piece;
     private ?Piece $pieceOnSpace;
     private int $newX;
     private int $newY;
 
     private array $rules = [
+        'isTurn',
         'pieceOnSpace',
         'isValidHorizontalMove',
         'isValidVerticalMove',
@@ -35,6 +38,8 @@ class Referee
             ->where('y', $this->newY)
             ->where('taken', false)
             ->first();
+
+        $this->board = Board::find($this->piece->board_id);
     }
 
     public function getViolations(): array
@@ -105,5 +110,21 @@ class Referee
     public function savePiece(): bool
     {
         return $this->piece->save();
+    }
+
+    /**
+     * Update the turn in the board
+     *
+     * @return bool
+     */
+    public function updateTurn(): bool
+    {
+        if ($this->board->turn === "white") {
+            $this->board->turn = "black";
+        } else {
+            $this->board->turn = "white";
+        }
+
+        return $this->board->save();
     }
 }
