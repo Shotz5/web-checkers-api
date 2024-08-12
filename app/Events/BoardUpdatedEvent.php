@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\Board;
+use App\Models\Piece;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -16,14 +17,16 @@ class BoardUpdatedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $board;
+    public Board $board;
+    public Piece $piece;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Board $board)
+    public function __construct(Board $board, Piece $piece)
     {
         $this->board = $board;
+        $this->piece = $piece;
     }
 
     /**

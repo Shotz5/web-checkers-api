@@ -22,9 +22,7 @@ for (let piece of pieces) {
 
 // Set up Websocket listener
 Echo.channel('App.Models.Board.' + window.location.pathname.split("/").at(-1))
-    .listen('BoardUpdatedEvent', (e) => {
-        window.location.reload();
-    });
+    .listen('BoardUpdatedEvent', movePieceOnWebsocket);
 
 /**
  * Functions
@@ -37,15 +35,11 @@ function movePiece(e) {
 
     axios.patch('/api/piece/' + this.id, { x: destination.dataset.x, y: destination.dataset.y })
         .then(response => {
-            // Preserve move
+            // // Preserve move
             console.log(response.data);
-            destination.innerHTML = '';
-            destination.appendChild(this);
             this.style.position = null;
             this.style.left = null;
             this.style.top = null;
-            this.x = destination.dataset.x;
-            this.y = destination.dataset.y;
         })
         .catch(error => {
             // Reset piece back to original spot
@@ -55,6 +49,14 @@ function movePiece(e) {
             this.style.left = null;
             this.style.top = null;
         });
+}
+
+function movePieceOnWebsocket(e) {
+    let piece = document.getElementById(e.piece.id);
+    let newParent = document.querySelector("[data-x='" + e.piece.x + "'][data-y='" + e.piece.y + "']");
+    piece.dataset.x = e.piece.x;
+    piece.dataset.y = e.piece.y;
+    newParent.appendChild(piece);
 }
 
 function setPieceLocation(piece, x, y) {

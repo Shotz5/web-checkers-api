@@ -29,7 +29,7 @@ class PieceController extends Controller
             return response('Error occurred while changing board turn', 500);
         }
 
-        broadcast(new BoardUpdatedEvent($referee->getBoard()));
+        broadcast(new BoardUpdatedEvent($referee->getBoard(), $referee->getPiece()));
 
         return response()->json($referee->getPiece()->toArray());
     }

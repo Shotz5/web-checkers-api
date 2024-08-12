@@ -13,8 +13,7 @@
             @for ($y = 1; $y <= 8; $y++)
                 <tr>
                     @for ($x = 1; $x <= 8; $x++)
-                        <td id="board-{{ $x . $y }}"
-                            class="square {{ (($x + $y) % 2 == 0) ? 'white' : 'black' }}"
+                        <td class="square {{ (($x + $y) % 2 == 0) ? 'white' : 'black' }}"
                             data-x="{{ $x }}"
                             data-y="{{ $y }}"
                         >
