@@ -12,28 +12,28 @@
     <input id="email" type="email" name="email" />
     <h3>Password</h3>
     <input id="password" type="password" name="password" />
-    <h3>Remember Me</h3>
-    <input id="remember" type="checkbox" name="remember" />
-    <button id="login">Login</button>
+    <h3>Name</h3>
+    <input id="name" type="text" name="name" />
+    <button id="create">Create</button>
 </body>
 </html>
 
 <script>
     const email = document.getElementById("email");
     const password = document.getElementById("password");
-    const remember = document.getElementById("remember");
-    const button = document.getElementById("login");
+    const name = document.getElementById("name");
+    const button = document.getElementById("create");
 
     button.addEventListener('click', login);
 
     function login() {
-        axios.post('/api/account/login', {
+        axios.post('/api/account/create', {
             email: email.value,
             password: password.value,
-            remember: remember.checked,
+            name: name.value,
         })
         .then((res) => {
-            console.log(res.data);
+            window.location.href = "/account/login";
         })
         .catch((res) => {
             console.log(res.response.data);

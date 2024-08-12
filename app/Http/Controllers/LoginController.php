@@ -18,7 +18,7 @@ class LoginController extends Controller
     /**
      * Authenticates the user
      */
-    public function authenticate(Request $request)
+    public function create(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -30,9 +30,9 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $remember['remember'])) {
-            $request->session()->regenerate();
+            session()->regenerate();
 
-            return redirect()->intended('/');
+            return response('Auth successful', 200);
         }
 
         return response([
