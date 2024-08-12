@@ -22,7 +22,7 @@ for (let piece of pieces) {
 
 // Set up Websocket listener
 Echo.channel('App.Models.Board.' + window.location.pathname.split("/").at(-1))
-    .listen('BoardUpdatedEvent', movePieceOnWebsocket);
+    .listen('RefereeUpdatedEvent', movePieceOnWebsocket);
 
 /**
  * Functions
@@ -52,10 +52,16 @@ function movePiece(e) {
 }
 
 function movePieceOnWebsocket(e) {
-    let piece = document.getElementById(e.piece.id);
-    let newParent = document.querySelector("[data-x='" + e.piece.x + "'][data-y='" + e.piece.y + "']");
-    piece.dataset.x = e.piece.x;
-    piece.dataset.y = e.piece.y;
+    let piece = document.getElementById(e.referee.piece.id);
+    let takenPiece = document.getElementById(e.referee.takenPiece?.id);
+    let newParent = document.querySelector("[data-x='" + e.referee.piece.x + "'][data-y='" + e.referee.piece.y + "']");
+    piece.dataset.x = e.referee.piece.x;
+    piece.dataset.y = e.referee.piece.y;
+
+    if (takenPiece) {
+        takenPiece.remove();
+    }
+
     newParent.appendChild(piece);
 }
 

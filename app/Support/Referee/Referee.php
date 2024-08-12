@@ -10,11 +10,14 @@ class Referee
 {
     use Rules;
 
-    private Board $board;
-    private Piece $piece;
-    private ?Piece $pieceOnSpace;
+    public Board $board;
+    public Piece $piece;
+    public ?Piece $takenPiece;
+    public ?Piece $pieceOnSpace;
     private int $newX;
     private int $newY;
+    private int $xNumJumped;
+    private int $yNumJumped;
 
     private array $rules = [
         'isTurn',
@@ -33,13 +36,22 @@ class Referee
         $this->newX = $newX;
         $this->newY = $newY;
 
+        $this->xNumJumped = $this->piece->x - $this->newX;
+        $this->yNumJumped = $this->piece->y - $this->newY;
+
+        $this->board = Board::find($this->piece->board_id);
+
+        $this->takenPiece = Piece::where('board_id', $this->piece->board_id)
+            ->where('x', ($this->newX + ($this->xNumJumped / 2)))
+            ->where('y', ($this->newY + ($this->yNumJumped / 2)))
+            ->where('taken', false)
+            ->first();
+
         $this->pieceOnSpace = Piece::where('board_id', $this->piece->board_id)
             ->where('x', $this->newX)
             ->where('y', $this->newY)
             ->where('taken', false)
             ->first();
-
-        $this->board = Board::find($this->piece->board_id);
     }
 
     public function getViolations(): array
@@ -60,6 +72,11 @@ class Referee
     public function getPieceOnSpace(): ?Piece
     {
         return $this->pieceOnSpace;
+    }
+
+    public function getJumpedPiece(): ?Piece
+    {
+        return $this->jumpedPiece;
     }
 
     /**

@@ -43,7 +43,7 @@ trait Rules
      */
     private function isValidHorizontalMove(): ?RefereeEnums
     {
-        $num_jumped = abs($this->piece->x - $this->newX);
+        $num_jumped = abs($this->xNumJumped);
 
         if ($num_jumped > 2 || $num_jumped == 0) {
             return RefereeEnums::INVALID_HORIZONTAL_MOVE;
@@ -59,7 +59,7 @@ trait Rules
      */
     private function isValidVerticalMove(): ?RefereeEnums
     {
-        $num_jumped = $this->piece->y - $this->newY;
+        $num_jumped = $this->yNumJumped;
 
         if (abs($num_jumped) > 2 || $num_jumped == 0) {
             return RefereeEnums::INVALID_VERTICAL_MOVE;
@@ -90,8 +90,8 @@ trait Rules
      */
     private function verticalCountEqualsHorizontalCount(): ?RefereeEnums
     {
-        $x_num_jumped = abs($this->piece->x - $this->newX);
-        $y_num_jumped = abs($this->piece->y - $this->newY);
+        $x_num_jumped = abs($this->xNumJumped);
+        $y_num_jumped = abs($this->yNumJumped);
 
         if ($x_num_jumped != $y_num_jumped) {
             return RefereeEnums::INVALID_DIRECTION_COUNTS;
@@ -107,30 +107,21 @@ trait Rules
      */
     private function isValidJump(): ?RefereeEnums
     {
-        $x_num_jumped = $this->piece->x - $this->newX;
-        $y_num_jumped = $this->piece->y - $this->newY;
-
         // Early return if not a jump attempt
-        if (abs($x_num_jumped) == 1 && abs($y_num_jumped) == 1) {
+        if (abs($this->xNumJumped) == 1 && abs($this->yNumJumped) == 1) {
             return null;
         }
 
-        $jumped_piece = Piece::where('board_id', $this->piece->board_id)
-            ->where('x', ($this->newX + ($x_num_jumped / 2)))
-            ->where('y', ($this->newY + ($y_num_jumped / 2)))
-            ->where('taken', false)
-            ->first();
-
-        if (!$jumped_piece) {
+        if (!$this->takenPiece) {
             return RefereeEnums::INVALID_JUMP;
         }
 
-        if ($jumped_piece->colour === $this->piece->colour) {
+        if ($this->takenPiece->colour === $this->piece->colour) {
             return RefereeEnums::INVALID_JUMP_OWN_PIECE;
         }
 
-        $jumped_piece->taken = true;
-        $jumped_piece->save();
+        $this->takenPiece->taken = true;
+        $this->takenPiece->save();
 
         return null;
     }

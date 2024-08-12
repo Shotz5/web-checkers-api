@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\BoardUpdatedEvent;
+use App\Events\RefereeUpdatedEvent;
 use App\Support\Referee\Referee;
 
 class PieceController extends Controller
@@ -29,7 +29,7 @@ class PieceController extends Controller
             return response('Error occurred while changing board turn', 500);
         }
 
-        broadcast(new BoardUpdatedEvent($referee->getBoard(), $referee->getPiece()));
+        broadcast(new RefereeUpdatedEvent($referee));
 
         return response()->json($referee->getPiece()->toArray());
     }
