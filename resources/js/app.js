@@ -20,6 +20,12 @@ for (let piece of pieces) {
     piece.addEventListener('mouseup', movePiece);
 }
 
+// Set up Websocket listener
+Echo.channel('App.Models.Board.' + window.location.pathname.split("/").at(-1))
+    .listen('BoardUpdatedEvent', (e) => {
+        window.location.reload();
+    });
+
 /**
  * Functions
  */

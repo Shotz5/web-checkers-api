@@ -52,6 +52,11 @@ class Referee
         return $this->piece;
     }
 
+    public function getBoard(): Board
+    {
+        return $this->board;
+    }
+
     public function getPieceOnSpace(): ?Piece
     {
         return $this->pieceOnSpace;
