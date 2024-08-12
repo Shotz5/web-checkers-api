@@ -15,6 +15,9 @@
     <h3>Remember Me</h3>
     <input id="remember" type="checkbox" name="remember" />
     <button id="login">Login</button>
+    <br>
+    <br>
+    <button id="logout">Logout</button>
 </body>
 </html>
 
@@ -23,20 +26,37 @@
     const password = document.getElementById("password");
     const remember = document.getElementById("remember");
     const button = document.getElementById("login");
+    const logoutButton = document.getElementById("logout");
 
     button.addEventListener('click', login);
+    logoutButton.addEventListener('click', logout);
 
     function login() {
-        axios.post('/api/account/login', {
-            email: email.value,
-            password: password.value,
-            remember: remember.checked,
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/api/account/login', {
+                email: email.value,
+                password: password.value,
+                remember: remember.checked,
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((res) => {
+                console.log(res.response.data);
+            })
         })
+        .catch((res) => {
+            console.log('Unable to create CSRF token');
+        });
+    }
+
+    function logout() {
+        axios.get('/api/account/logout')
         .then((res) => {
             console.log(res.data);
         })
         .catch((res) => {
             console.log(res.response.data);
-        })
+        });
     }
 </script>
