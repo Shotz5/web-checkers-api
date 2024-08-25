@@ -36,7 +36,7 @@ class LoginController extends Controller
         }
 
         return response([
-            'email' => 'The provided credentials do not match our records',
+            'message' => 'The provided credentials do not match our records',
         ], 400);
     }
 

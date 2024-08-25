@@ -14,7 +14,12 @@ return new class extends Migration
         Schema::create('boards', function (Blueprint $table) {
             $table->id();
             $table->enum('turn', ['white', 'black'])->default('white');
+            $table->integer('host');
+            $table->integer('opponent');
             $table->timestamps();
+
+            $table->foreign('host')->references('id')->on('users');
+            $table->foreign('opponent')->references('id')->on('users');
         });
     }
 

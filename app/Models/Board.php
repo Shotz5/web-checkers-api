@@ -9,6 +9,16 @@ class Board extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'host',
+        'opponent',
+    ];
+
     public function pieces()
     {
         return $this->hasMany(Piece::class);

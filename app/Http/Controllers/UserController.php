@@ -32,7 +32,7 @@ class UserController extends Controller
             'username' => ['required'],
         ]);
 
-        $users = User::where('username', 'LIKE', '%' . $search['username'] . '%')->get(['username']);
+        $users = User::where('username', 'LIKE', '%' . $search['username'] . '%')->get(['id', 'username']);
 
         return response()->json($users->toArray());
     }
