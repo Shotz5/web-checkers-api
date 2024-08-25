@@ -15,6 +15,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $user = $request->validate([
+            'username' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required'],
             'name' => ['required'],
@@ -22,6 +23,17 @@ class UserController extends Controller
 
         $user = new User($user);
         $user->save();
-        return redirect('/account/login');
+        return response()->json('success');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->validate([
+            'username' => ['required'],
+        ]);
+
+        $users = User::where('username', 'LIKE', '%' . $search['username'] . '%')->get(['username']);
+
+        return response()->json($users->toArray());
     }
 }

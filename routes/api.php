@@ -18,4 +18,5 @@ Route::prefix('/account')->group(function () {
     Route::post('/login', [LoginController::class, 'create']);
     Route::post('/create', [UserController::class, 'create']);
     Route::get('/logout', [LoginController::class, 'destory']);
+    Route::get('/search', [UserController::class, 'search'])->middleware('auth:sanctum');
 });
