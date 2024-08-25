@@ -40,6 +40,19 @@ class LoginController extends Controller
         ], 400);
     }
 
+    public function status()
+    {
+        if (!Auth::check()) {
+            return response("Not authenticated", 404);
+        }
+
+        $user = Auth::user();
+
+        return response()->json([
+            "name" => $user->name,
+        ]);
+    }
+
     /**
      * Logs the user out
      */
