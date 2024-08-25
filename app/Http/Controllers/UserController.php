@@ -15,8 +15,8 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $user = $request->validate([
-            'username' => ['required'],
-            'email' => ['required', 'email'],
+            'username' => ['required', 'unique:users'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required'],
             'name' => ['required'],
         ]);
